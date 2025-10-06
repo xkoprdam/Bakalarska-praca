@@ -1,0 +1,69 @@
+# --- macOS system files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# --- Log files ---
+*.log
+
+# --- Node / JS projects (if used) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# --- PHP / Composer (if used) ---
+vendor/
+composer.lock
+
+# --- Cache / temporary files ---
+*.tmp
+*.temp
+*.cache
+.cache/
+tmp/
+temp/
+
+# --- Build output / compiled files ---
+dist/
+build/
+out/
+public/build/  # or whatever your build output folder
+*.class, *.jar, *.war (if any Java)
+*.o, *.so, *.exe, *.dll
+
+# --- IDE / Editor config ---
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.sublime-workspace
+*.sublime-project
+*.editorconfig  # you might want to track this depending on convention
+*.project
+*.classpath
+.settings/
+
+# --- Environment / Secret files ---
+.env
+.env.* 
+*.env.local
+credentials.json
+secret*.json
+*.pem
+*.key
+
+# --- Logs / system files ---
+error.log
+debug.log
+*.bak
+*.swp
+*.swo
+
+# --- Others ---
+Thumbs.db
