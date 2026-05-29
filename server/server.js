@@ -113,6 +113,9 @@ async function ensureTrackInDatabase(spotifyApi, track) {
 // Existing routes
 app.post('/refresh', (req, res) => {
     const refreshToken = req.body.refreshToken;
+    if (!refreshToken) {
+        return res.status(400).json({ error: 'Refresh token is required' });
+    }
     const spotifyApi = new SpotifyWebApi({
         ...spotifyConfig,
         refreshToken,
@@ -191,7 +194,7 @@ app.post('/recommendations', async (req, res) => {
     try {
         const { accessToken } = req.body;
         if (!accessToken) {
-            return res.status(400).json({ error: 'Access token is required' });
+            return res.status(401).json({ error: 'Access token is required' });
         }
 
         const implicitRecommender = new ImplicitRecommender(accessToken);
@@ -254,6 +257,15 @@ app.post('/recommendations', async (req, res) => {
 app.post('/ratings', async (req, res) => {
     const { track, rating, userEmail, accessToken } = req.body;
 
+    // Validate required fields
+    if (!track || !track.id || !userEmail || rating == null || !accessToken) {
+        return res.status(400).json({ error: 'Missing required fields: track.id, rating, userEmail, accessToken' });
+    }
+    // Validate rating range (1-5)
+    if (typeof rating !== 'number' || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Rating must be a number between 1 and 5' });
+    }
+
     console.log('Received rating request:');
     try {
         // Ensure user exists
@@ -304,9 +316,9 @@ app.post('/ratings', async (req, res) => {
 
 app.post('/play-recommendations', async (req, res) => {
     try {
-        const { accessToken, recommendations } = req.body;
-        if (!accessToken || !recommendations) {
-            return res.status(400).json({ error: 'Missing data' });
+        const { accessToken, recommendations, deviceId } = req.body;
+        if (!accessToken || !recommendations || !Array.isArray(recommendations)) {
+            return res.status(400).json({ error: 'Missing or invalid data: accessToken and recommendations (array) required' });
         }
         const spotifyApi = new SpotifyWebApi({ ...spotifyConfig, accessToken });
 
@@ -314,7 +326,10 @@ app.post('/play-recommendations', async (req, res) => {
         const uris = recommendations.map(rec => rec.track ? rec.track.uri : rec.uri);
 
         // Start playback with the list (this replaces queue & plays now)
-        await spotifyApi.play({ uris });
+        await spotifyApi.play({
+            uris,
+            device_id: deviceId,
+        });
 
         res.json({ status: 'ok' });
     } catch (err) {
@@ -323,6 +338,8 @@ app.post('/play-recommendations', async (req, res) => {
     }
 });
 
+
+const ALLOWED_INTERACTIONS = ['listen', 'skip', 'add_to_library', 'remove_from_library'];
 
 app.post('/track-changed', async (req, res) => {
 
@@ -333,6 +350,11 @@ app.post('/track-changed', async (req, res) => {
 
         if (!trackUri) {
             return res.status(400).json({ error: 'Track interaction: Missing trackUri' });
+        }
+        if (interaction && !ALLOWED_INTERACTIONS.includes(interaction)) {
+            return res.status(400).json({
+                error: `Invalid interaction type. Allowed: ${ALLOWED_INTERACTIONS.join(', ')}`,
+            });
         }
 
         // Find track_id by trackUri
@@ -389,10 +411,10 @@ app.post('/track-changed', async (req, res) => {
 app.post('/add-to-library', async (req, res) => {
     try {
         const { accessToken, track } = req.body;
-        const trackId = track.id;
-        if (!accessToken || !trackId) {
-            return res.status(400).json({ error: 'Missing data' });
+        if (!accessToken || !track || !track.id) {
+            return res.status(400).json({ error: 'Missing data: accessToken and track.id required' });
         }
+        const trackId = track.id;
         const spotifyApi = new SpotifyWebApi({ ...spotifyConfig, accessToken });
 
         // Get user info
@@ -445,6 +467,24 @@ app.get('/health', (req, res) => {
 });
 
 
-app.listen(3001, () => {
-    console.log('Server running on http://localhost:3001');
+// 404 handler — must be after all routes
+app.use((req, res) => {
+    res.status(404).json({ error: 'Endpoint not found', path: req.path });
 });
+
+// Global error handler — must be the last middleware
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+});
+
+
+// Export app for tests; only listen if running directly (not via require)
+module.exports = app;
+
+if (require.main === module) {
+    app.listen(3001, () => {
+        console.log('Server running on http://localhost:3001');
+    });
+}

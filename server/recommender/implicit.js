@@ -394,7 +394,7 @@ class ImplicitRecommender {
             const genreScore   = this._genreSimilarity(userProfile.genres, genres);
             const popScore     = this._normalizePopularity(track.popularity);
 
-            const finalScore = 0.8 * genreScore + 0.2 * popScore;
+            const finalScore = 0.9 * genreScore + 0.1 * popScore;
 
             // console.log(`"${track.name}" score: genre=${genreScore.toFixed(2)}, genres: ${genres.join(', ')}`);
 

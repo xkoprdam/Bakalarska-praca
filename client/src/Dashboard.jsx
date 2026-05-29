@@ -26,6 +26,8 @@ export default function Dashboard({ code }) {
     const [hoverRating, setHoverRating] = useState(0);
     const [recommendations, setRecommendations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [deviceId, setDeviceId] = useState(null);
+    const [playingUris, setPlayingUris] = useState([]);
     const [allRecommendations, setAllRecommendations] = useState({
         implicit: [],
         hybrid: [],
@@ -34,6 +36,12 @@ export default function Dashboard({ code }) {
 
     function chooseTrack(track) {
         setPlayingTrack(track);
+        setPlayingUris([]);   // clear playlist so single track wins
+    }
+
+    function playList(uris) {
+        setPlayingUris(uris);
+        setPlayingTrack(null);  // clear single track so playlist wins
     }
 
     function handleRating(rating) {
@@ -238,7 +246,12 @@ export default function Dashboard({ code }) {
 
                     {/* Player fixed at top of right content area */}
                     <div className="sticky top-0 z-10 bg-white">
-                        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+                        <Player
+                            accessToken={accessToken}
+                            trackUri={playingTrack?.uri}
+                            trackUris={playingUris}
+                            onDeviceReady={(id) => setDeviceId(id)}
+                        />
                     </div>
 
 
@@ -263,6 +276,7 @@ export default function Dashboard({ code }) {
                                 chooseTrack={chooseTrack}
                                 recommendations={recommendations}
                                 setRecommendations={setRecommendations}
+                                playList={playList}
                             />
                         )}
 

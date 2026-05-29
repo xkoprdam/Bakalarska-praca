@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TrackRow from "./TrackRow.jsx";
 
-export default function Recommendations({ accessToken, chooseTrack, recommendations, setRecommendations }) {
+export default function Recommendations({ accessToken, chooseTrack, recommendations, setRecommendations, playList }) {
     // const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -67,29 +67,11 @@ export default function Recommendations({ accessToken, chooseTrack, recommendati
         fetchRecommendations();
     };
 
-    const handlePlayAll = async () => {
-        try {
-            setPlayStatus('loading');
-            await axios.post('http://localhost:3001/play-recommendations', {
-                accessToken,
-                recommendations: recommendationsForTab,
-            }, {
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            // fetch current playback info from Spotify and update state
-            const playbackRes = await axios.get('https://api.spotify.com/v1/me/player/currently-playing', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-            if (playbackRes.data && playbackRes.data.item) {
-                chooseTrack(playbackRes.data.item);
-            }
-            setPlayStatus('success');
-        } catch (e) {
-            setPlayStatus('error');
-        }
+    const handlePlayAll = () => {
+        const uris = recommendationsForTab.map(rec => rec.track?.uri ?? rec.uri).filter(Boolean);
+        if (!uris.length) return;
+        playList(uris);
+        setPlayStatus('success');
     };
 
     const handleAddToLibrary = async (track) => {

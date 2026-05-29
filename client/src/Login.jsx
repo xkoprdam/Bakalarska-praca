@@ -3,7 +3,7 @@ import React from 'react'
 const AUTH_URL =
     "https://accounts.spotify.com/authorize?client_id=84dda6ace0e94d1aa569581948fd9f7d" +
     "&response_type=code" +
-    "&redirect_uri=http://localhost:3000" +
+    "&redirect_uri=http://127.0.0.1:3000" +
     "&scope=" +
 
     "ugc-image-upload%20" +         // custom playlist cover

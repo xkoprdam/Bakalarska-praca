@@ -2,14 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import SpotifyPlayer from "react-spotify-web-playback";
 import axios from "axios";
 
-export default function Player({ accessToken, trackUri }) {
+export default function Player({ accessToken, trackUri, trackUris, onDeviceReady }) {
     const [play, setPlay] = useState(false);
 
     // Track URI and playback time refs
     const prevTrackUri = useRef(null);
     const lastTrackStart = useRef(null);
 
-    useEffect(() => setPlay(true), [trackUri]);
+    // Play when single track or playlist changes
+    useEffect(() => { if (trackUri) setPlay(true); }, [trackUri]);
+    useEffect(() => { if (trackUris?.length) setPlay(true); }, [trackUris]);
 
     const handleCallback = (state) => {
         if (!state || !state.track) return;
@@ -53,6 +55,31 @@ export default function Player({ accessToken, trackUri }) {
         }
 
         if (!state.isPlaying) setPlay(false);
+
+        if (state.deviceId) {
+            onDeviceReady?.(state.deviceId);
+        }
+
+    };
+
+    const handleGetPlayer = (player) => {
+        console.log('🎵 getPlayer called, player:', player);
+        player.addListener('ready', ({ device_id }) => {
+            console.log('✅ Device ready, ID:', device_id);
+            onDeviceReady?.(device_id);
+        });
+        player.addListener('not_ready', ({ device_id }) => {
+            console.log('❌ Device went offline:', device_id);
+        });
+        player.addListener('initialization_error', ({ message }) => {
+            console.error('🔴 Init error:', message);
+        });
+        player.addListener('authentication_error', ({ message }) => {
+            console.error('🔴 Auth error:', message);
+        });
+        player.addListener('account_error', ({ message }) => {
+            console.error('🔴 Account error:', message);
+        });
     };
 
     if (!accessToken) return null;
@@ -60,8 +87,11 @@ export default function Player({ accessToken, trackUri }) {
         <SpotifyPlayer
             token={accessToken}
             callback={handleCallback}
+            getPlayer={handleGetPlayer}
             play={play}
-            uris={trackUri ? [trackUri] : []}
+            uris={trackUris?.length ? trackUris : trackUri ? [trackUri] : []}
+            persistDeviceSelection
+            syncExternalDevice
             styles={{
                 activeColor: '#1db954',
                 bgColor: '#242424',
