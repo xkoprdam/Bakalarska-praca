@@ -1,0 +1,121 @@
+<mxfile host="Electron" modified="2024-01-01T00:00:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device">
+  <diagram name="Generovanie odporucani" id="activity-recommendations">
+    <mxGraphModel dx="1422" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" value="" style="ellipse;fillColor=#000000;strokeColor=#000000;html=1;" vertex="1" parent="1">
+          <mxGeometry x="435" y="40" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="verify" value="Overenie Spotify tokenu" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="375" y="110" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fork" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="80" y="200" width="740" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="imp1" value="Implicitny profil: nacitaj top skladby a interakcie" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="100" y="240" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="imp2" value="Vypocitaj vahy zanrov a interpretov" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="100" y="330" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="exp1" value="Explicitny profil: hodnotenia, ulozene skladby, playlisty, sledovani interpreti" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="350" y="240" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="exp2" value="Vypocitaj vahy zanrov a interpretov" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="350" y="330" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hyb1" value="Hybridny profil: zostav explicitny a implicitny profil" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="600" y="240" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hyb2" value="Zluc profily (0.7 / 0.3)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="600" y="330" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="join" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="80" y="420" width="740" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" value="Vyber top zanre a interpretov + rozsah rokov vydania" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="460" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" value="Nacitaj kandidatov z popularnych playlistov" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="550" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" value="Ohodnot kandidatov (0.9 x zanrova podobnost + 0.1 x popularita)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="640" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" value="Vyber top skladby podla skore" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="740" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" value="Dopln skladby zo zanrovych playlistov a od oblubenych interpretov" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="320" y="830" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a6" value="Premiesaj a orez zoznam" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="920" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a7" value="Vrat klientovi tri zoznamy odporucani" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="1000" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="endnode" value="" style="ellipse;fillColor=#000000;strokeColor=#000000;html=1;" vertex="1" parent="1">
+          <mxGeometry x="435" y="1090" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="endArrow=open;html=1;" edge="1" parent="1" source="start" target="verify">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="endArrow=open;html=1;" edge="1" parent="1" source="verify" target="fork">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3a" style="endArrow=open;html=1;" edge="1" parent="1" source="fork" target="imp1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3b" style="endArrow=open;html=1;" edge="1" parent="1" source="fork" target="exp1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3c" style="endArrow=open;html=1;" edge="1" parent="1" source="fork" target="hyb1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4a" style="endArrow=open;html=1;" edge="1" parent="1" source="imp1" target="imp2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4b" style="endArrow=open;html=1;" edge="1" parent="1" source="exp1" target="exp2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4c" style="endArrow=open;html=1;" edge="1" parent="1" source="hyb1" target="hyb2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5a" style="endArrow=open;html=1;" edge="1" parent="1" source="imp2" target="join">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5b" style="endArrow=open;html=1;" edge="1" parent="1" source="exp2" target="join">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5c" style="endArrow=open;html=1;" edge="1" parent="1" source="hyb2" target="join">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="endArrow=open;html=1;" edge="1" parent="1" source="join" target="a1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="endArrow=open;html=1;" edge="1" parent="1" source="a1" target="a2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="endArrow=open;html=1;" edge="1" parent="1" source="a2" target="a3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" style="endArrow=open;html=1;" edge="1" parent="1" source="a3" target="a4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" style="endArrow=open;html=1;" edge="1" parent="1" source="a4" target="a5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" style="endArrow=open;html=1;" edge="1" parent="1" source="a5" target="a6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" style="endArrow=open;html=1;" edge="1" parent="1" source="a6" target="a7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" style="endArrow=open;html=1;" edge="1" parent="1" source="a7" target="endnode">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

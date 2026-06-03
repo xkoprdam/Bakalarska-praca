@@ -13,8 +13,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
-yarn.lock
+# package-lock.json a yarn.lock MUSIA byť v repe pre reproducovateľné inštalácie
 
 # --- PHP / Composer (if used) ---
 vendor/
@@ -51,12 +50,19 @@ public/build/  # or whatever your build output folder
 
 # --- Environment / Secret files ---
 .env
-.env.* 
+.env.*
+!.env.example
 *.env.local
 credentials.json
 secret*.json
 *.pem
 *.key
+
+# --- Local DB volumes ---
+db/data/
+
+# --- Old backups ---
+*.zip
 
 # --- Logs / system files ---
 error.log

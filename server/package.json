@@ -15,6 +15,9 @@
       "**/__tests__/**/*.test.js"
     ]
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
