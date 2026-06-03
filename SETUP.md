@@ -110,16 +110,18 @@ SPOTIFY_REDIRECT_URI=http://127.0.0.1:3000
 
 ## 5. Spustenie databázy
 
-Uisti sa, že **Docker Desktop beží** (ikonka v system tray). Potom:
+Uisti sa, že **Docker Desktop beží** (ikonka v system tray). Potom z koreňa projektu:
 
 ```powershell
-docker compose up -d
+docker compose --env-file server\.env up -d
 ```
+
+> **Prečo flag `--env-file`?** Docker Compose hľadá premenné prostredia v `.env` v rovnakej zložke ako `docker-compose.yml`, ale naše konfigurácie sú v `server\.env`. Týmto flagom ich tam nasmerujeme.
 
 Pri prvom spustení Docker:
 - stiahne MySQL 8.0 image (~500 MB),
 - vytvorí kontajner `rs-mysql`,
-- spustí inicializačné SQL skripty z `db/init/` (vytvoria schému a importujú vzorové dáta).
+- spustí inicializačné SQL skripty z `db/init/` (vytvoria prázdnu schému).
 
 Over že beží:
 ```powershell
@@ -148,7 +150,34 @@ cd ..
 
 ---
 
-## 7. Spustenie aplikácie
+## 7. Naplnenie databázy hudbou (seeding)
+
+Databáza je po kroku 5 prázdna — má iba schému (tabuľky), ale žiadne skladby, interpretov ani žánre. Aplikácia by bez nich nemala na čom robiť odporúčania.
+
+Spusti seedovací skript:
+
+```powershell
+cd server
+node initPlaylists.js
+```
+
+Skript:
+- prejde cca **30 preddefinovaných Spotify playlistov** (top hity, žánrové výbery — pop, rock, rap, jazz, indie, classical, ...),
+- pre každú skladbu si stiahne metadáta zo Spotify API a uloží ju do `tracks`, `artists`, `genres`, `track_artist`, `artist_genre`, `playlists` a `playlist_tracks` tabuliek.
+
+> **Trvanie:** 5-15 minút podľa rýchlosti pripojenia. V konzole vidíš postup — playlist po playliste.
+
+Po dobehnutí over že sú dáta v DB:
+```powershell
+docker exec rs-mysql mysql -u <DB_USER> -p<DB_PASSWORD> rs -e "SELECT COUNT(*) FROM tracks; SELECT COUNT(*) FROM artists;"
+```
+Mali by si vidieť stovky až tisíce v oboch.
+
+> **Krok stačí spustiť raz.** Pri ďalšom štarte aplikácie sa preskakuje — dáta zostanú v `db\data\` aj po reštarte počítača.
+
+---
+
+## 8. Spustenie aplikácie
 
 Potrebuješ **dva PowerShell terminály** (oba bežia paralelne).
 
@@ -168,7 +197,7 @@ Mal by si vidieť: `Local: http://127.0.0.1:3000/`
 
 ---
 
-## 8. Otvorenie aplikácie
+## 9. Otvorenie aplikácie
 
 V Chrome otvor:
 ```

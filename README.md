@@ -14,9 +14,10 @@ Bakalárska práca — hudobný odporúčací systém integrovaný so Spotify.
 ```bash
 git clone <URL>
 cd Bakalarska-praca
-cp server/.env.example server/.env       # potom .env vyplň
-docker compose up -d                     # databáza
-(cd server && npm ci && npm run devStart) &
+cp server/.env.example server/.env                    # potom .env vyplň
+docker compose --env-file server/.env up -d           # databáza
+(cd server && npm ci && node initPlaylists.js)        # seed (5-15 min, len raz)
+(cd server && npm run devStart) &
 (cd client && npm ci && npm run dev)
 ```
 
@@ -48,7 +49,7 @@ Podrobný návod (vrátane Spotify Developer Dashboard setupu) je v [SETUP.md](.
 ├── server/              Express backend
 │   ├── recommender/     Odporúčacie algoritmy
 │   ├── server.js        Hlavný entry point
-│   └── .env.example     Šablóna konfigurácie
+│   └── .env.example     Šablóna konfigurácie (skopíruj na server/.env)
 ├── db/init/             SQL skripty pre prvotnú inicializáciu MySQL
 ├── docker-compose.yml   Definícia MySQL kontajnera
 ├── SETUP.md             Inštalačný manuál

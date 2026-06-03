@@ -3,15 +3,15 @@ services:
     image: mysql:8.0
     container_name: rs-mysql
     restart: unless-stopped
-    env_file:
-      - ./server/.env
     environment:
+      # ${VAR} substitúcia číta z server/.env cez --env-file flag
+      # Spúšťaj príkazom: docker compose --env-file server/.env up -d
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "${DB_PORT}:3306"
+      - "${DB_PORT:-3306}:3306"
     volumes:
       - ./db/data:/var/lib/mysql
       - ./db/init:/docker-entrypoint-initdb.d:ro

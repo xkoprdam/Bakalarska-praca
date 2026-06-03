@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 
 const express = require('express');
 const cors = require('cors');
@@ -147,6 +147,12 @@ app.post('/login', async (req, res) => {
         console.warn("🚫 Missing 'code' in request body");
         return res.sendStatus(400);
     }
+
+    console.log('🔑 Spotify config used:', {
+        clientId: spotifyConfig.clientId ? spotifyConfig.clientId.slice(0, 6) + '...' : 'UNDEFINED',
+        clientSecret: spotifyConfig.clientSecret ? '✓ set (' + spotifyConfig.clientSecret.length + ' chars)' : 'UNDEFINED',
+        redirectUri: spotifyConfig.redirectUri || 'UNDEFINED',
+    });
 
     const spotifyApi = new SpotifyWebApi(spotifyConfig);
 

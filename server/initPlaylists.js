@@ -1,4 +1,11 @@
-require('dotenv').config();
+// HISTORICKÝ SKRIPT — netreba spúšťať pri novej inštalácii.
+// Slúžil na prvotné stiahnutie playlistov zo Spotify do DB cez Web API.
+// Spotify endpoint getPlaylist() bol medzitým deprecated (Feb 2026 migrácia).
+// Vzorové dáta sú teraz v db/init/02-seed.sql a importujú sa automaticky
+// pri prvom spustení `docker compose up`. Tento súbor je tu len ako
+// dokumentácia odkiaľ pôvodné playlist ID-čka pochádzajú.
+
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 
 const SpotifyWebApi = require('spotify-web-api-node');
 const mysql = require('mysql2/promise');
